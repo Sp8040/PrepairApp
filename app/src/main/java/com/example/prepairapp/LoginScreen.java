@@ -2,6 +2,9 @@ package com.example.prepairapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -20,6 +23,8 @@ public class LoginScreen extends AppCompatActivity {
     TextView goToSignUp;
     EditText email, password;
     Button signIn;
+
+    Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +46,9 @@ public class LoginScreen extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(TextUtils.isEmpty(email.getText().toString()) || TextUtils.isEmpty(password.getText().toString())){
-                    Toast.makeText(LoginScreen.this, "Fields are empty!", Toast.LENGTH_LONG).show();
+                if(TextUtils.isEmpty(email.getText().toString()) || TextUtils.isEmpty(password.getText().toString()))
+                {
+                    ShowDialogWindow("Fields are empty!");
                 }
                 else{
                     LoginRequest loginRequest = new LoginRequest();
@@ -63,14 +69,24 @@ public class LoginScreen extends AppCompatActivity {
                     startActivity(new Intent(LoginScreen.this, MainActivity.class));
                 }
                 else{
-                    Toast.makeText(LoginScreen.this, "Response isn't successful! Try again later.", Toast.LENGTH_LONG).show();
+                    ShowDialogWindow("Response isn't successful! Try again later.");
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Toast.makeText(LoginScreen.this, t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                ShowDialogWindow(t.getLocalizedMessage());
             }
         });
+    }
+
+    public void ShowDialogWindow(String text){
+        final AlertDialog aboutDialog = new AlertDialog.Builder(LoginScreen.this).setMessage(text).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }).create();
+        aboutDialog.show();
     }
 }

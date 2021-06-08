@@ -2,6 +2,8 @@ package com.example.prepairapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -46,7 +48,7 @@ public class RegisterScreen extends AppCompatActivity {
             public void onClick(View v) {
                 if(TextUtils.isEmpty(firstName.getText().toString()) || TextUtils.isEmpty(secondName.getText().toString()) || TextUtils.isEmpty(email.getText().toString()) || TextUtils.isEmpty(password.getText().toString()))
                 {
-                    Toast.makeText(RegisterScreen.this, "Fields are empty", Toast.LENGTH_LONG).show();
+                    ShowDialogWindow("Fields are empty");
                 }
                 else{
                     if(password.getText().toString().equals(repeatPassword.getText().toString())){
@@ -58,8 +60,7 @@ public class RegisterScreen extends AppCompatActivity {
                         registerUser(registerRequest);
                     }
                     else{
-                        Toast.makeText(RegisterScreen.this, "Confirm password!", Toast.LENGTH_LONG).show();
-
+                        ShowDialogWindow("Confirm password!");
                     }
                 }
 
@@ -73,18 +74,28 @@ public class RegisterScreen extends AppCompatActivity {
             @Override
             public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
                 if(response.isSuccessful()){
-                    Toast.makeText(RegisterScreen.this, "Successful!", Toast.LENGTH_LONG).show();
+                    ShowDialogWindow("Successful!");
                     startActivity(new Intent(RegisterScreen.this, LoginScreen.class));
                 }
                 else{
-                    Toast.makeText(RegisterScreen.this, "Response isn't successful! Try again later.", Toast.LENGTH_LONG).show();
+                    ShowDialogWindow("Response isn't successful! Try again later.");
                 }
             }
 
             @Override
             public void onFailure(Call<RegisterResponse> call, Throwable t) {
-                Toast.makeText(RegisterScreen.this, t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                ShowDialogWindow(t.getLocalizedMessage());
             }
         });
+    }
+
+    public void ShowDialogWindow(String text){
+        final AlertDialog aboutDialog = new AlertDialog.Builder(RegisterScreen.this).setMessage(text).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }).create();
+        aboutDialog.show();
     }
 }
