@@ -47,7 +47,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Password"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:password="true" />
 
         <EditText
             android:id="@+id/RepeatPassword"
@@ -55,7 +56,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Repeat password"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:password="true" />
 
         <TextView
             android:id="@+id/goToSignIn"
