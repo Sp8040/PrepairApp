@@ -19,11 +19,23 @@ public class StartScreen extends AppCompatActivity {
         TimerTask ts = new TimerTask() {
             @Override
             public void run() {
-                Intent intent = new Intent(StartScreen.this, LoginScreen.class);
-                startActivity(intent);
+
+                boolean firstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstRun", true);
+
+                if(firstRun){
+                    getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("firstRun", false).apply();
+
+                    Intent intent = new Intent(StartScreen.this, RegisterScreen.class);
+                    startActivity(intent);
+                }
+                else{
+                    Intent intent = new Intent(StartScreen.this, LoginScreen.class);
+                    startActivity(intent);
+                }
             }
         };
 
         timer.schedule(ts, 3000L);
     }
+
 }

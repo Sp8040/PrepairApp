@@ -51,19 +51,24 @@ public class RegisterScreen extends AppCompatActivity {
                     ShowDialogWindow("Fields are empty");
                 }
                 else{
-                    if(password.getText().toString().equals(repeatPassword.getText().toString())){
-                        RegisterRequest registerRequest = new RegisterRequest();
-                        registerRequest.setFirstName(firstName.getText().toString());
-                        registerRequest.setLastName(secondName.getText().toString());
-                        registerRequest.setEmail(email.getText().toString());
-                        registerRequest.setPassword(password.getText().toString());
-                        registerUser(registerRequest);
+                    if(android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches())
+                    {
+                        if(password.getText().toString().equals(repeatPassword.getText().toString())){
+                            RegisterRequest registerRequest = new RegisterRequest();
+                            registerRequest.setFirstName(firstName.getText().toString());
+                            registerRequest.setLastName(secondName.getText().toString());
+                            registerRequest.setEmail(email.getText().toString());
+                            registerRequest.setPassword(password.getText().toString());
+                            registerUser(registerRequest);
+                        }
+                        else{
+                            ShowDialogWindow("Confirm password!");
+                        }
                     }
                     else{
-                        ShowDialogWindow("Confirm password!");
+                        ShowDialogWindow("Email not valid!");
                     }
                 }
-
             }
         });
     }
